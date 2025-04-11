@@ -16,7 +16,7 @@ fun MangaApp(
     modifier: Modifier = Modifier
 ) {
    val navController = rememberNavController()
-    val isLoggedIn = false
+    val isLoggedIn = true
     NavHost(
         navController = navController,
         startDestination = if (isLoggedIn) MainScreen else SignInScreen

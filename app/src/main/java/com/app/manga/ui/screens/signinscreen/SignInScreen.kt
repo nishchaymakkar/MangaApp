@@ -2,6 +2,7 @@ package com.app.manga.ui.screens.signinscreen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -11,6 +12,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -32,19 +34,9 @@ fun SignInScreen() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
         ) {
-            // Close button
-            IconButton(
-                onClick = { /* Handle close */ },
-                modifier = Modifier.align(Alignment.Start)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Close,
-                    contentDescription = "Close",
-                    tint = Color.White
-                )
-            }
 
             Column(
                 modifier = Modifier
@@ -82,20 +74,24 @@ fun SignInScreen() {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    Button(
+                    IconButton(
                         onClick = { /* Handle Google login */ },
-                        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-                        modifier = Modifier.weight(1f).padding(end = 8.dp)
+                        colors = IconButtonDefaults.iconButtonColors(containerColor = Color.Gray),
+                        modifier = Modifier.clip(shape = CircleShape),
                     ) {
                         Text("G", color = Color.Black)
                     }
                     
-                    Button(
+                    IconButton(
                         onClick = { /* Handle Apple login */ },
-                        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-                        modifier = Modifier.weight(1f).padding(start = 8.dp)
+                        colors = IconButtonDefaults.iconButtonColors(containerColor = Color.Gray),
+                        modifier = Modifier.clip(shape = CircleShape),
+
                     ) {
-                        Text("", color = Color.Black)
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = null
+                        )
                     }
                 }
 
@@ -188,14 +184,13 @@ fun SignInScreen() {
                 ) {
                     Text(
                         text = "Don't have an account? ",
-                        color = Color.Gray
+                        color = Color.White
                     )
-                    TextButton(onClick = { /* Handle sign up */ }) {
-                        Text(
-                            text = "Sign Up",
-                            color = Color.Blue
-                        )
-                    }
+                    Text(
+                        text = "Sign Up",
+                        color = Color.Blue
+                    )
+
                 }
             }
         }
