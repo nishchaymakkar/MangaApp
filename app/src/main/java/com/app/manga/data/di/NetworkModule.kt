@@ -2,7 +2,7 @@ package com.app.manga.data.di
 
 import android.R.attr.level
 import android.content.Context
-import com.app.manga.data.di.NetworkModule.provideBlogifyApiService
+import com.app.manga.data.di.NetworkModule.provideMangaApiService
 import com.app.manga.data.di.NetworkModule.provideOkHttpClient
 import com.app.manga.data.di.NetworkModule.provideRetrofit
 import com.app.manga.data.network.MangaApiService
@@ -11,16 +11,20 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
-const val BASE_URL = "http://mangaverse-api.p.rapidapi.com"
+const val BASE_URL = "https://mangaverse-api.p.rapidapi.com/"
 
 object NetworkModule {
     fun provideOkHttpClient(): OkHttpClient {
         val logging = HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
+            setLevel(HttpLoggingInterceptor.Level.BODY)
         }
         
         return OkHttpClient.Builder()
+            .connectTimeout(15, TimeUnit.SECONDS)
+            .readTimeout(15, TimeUnit.SECONDS)
+            .writeTimeout(15, TimeUnit.SECONDS)
             .addInterceptor(logging)
             .addInterceptor { chain ->
                 val request = chain.request().newBuilder()
@@ -41,12 +45,13 @@ object NetworkModule {
             .build()
     }
 
-    fun provideBlogifyApiService(retrofit: Retrofit): MangaApiService {
+    fun provideMangaApiService(retrofit: Retrofit): MangaApiService {
         return retrofit.create(MangaApiService::class.java)
     }
 }
-val networkModule= module {
-    single { provideOkHttpClient()}
+
+val networkModule = module {
+    single { provideOkHttpClient() }
     single { provideRetrofit(get()) }
-    single { provideBlogifyApiService(get()) }
+    single { provideMangaApiService(get()) }
 }

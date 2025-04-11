@@ -11,14 +11,5 @@ interface MangaApiService {
     suspend fun getAllManga(
         @Query("page") page: Int,
         @Query("size") size: Int
-    ): List<Manga> {
-        try {
-            val response = getAllManga(page, size)
-            Log.d("MangaApiService", "Success! Received ${response.size} items")
-            return response
-        } catch (e: Exception) {
-            Log.e("MangaApiService", "Error fetching manga: ${e.message}", e)
-            throw e
-        }
-    }
+    ): List<Manga>
 }
