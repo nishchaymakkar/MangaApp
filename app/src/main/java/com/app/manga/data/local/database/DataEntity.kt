@@ -23,6 +23,6 @@ data class DataEntity(
 
 @Entity
 data class MangaEntity(
-    @PrimaryKey val id: String,
+    @PrimaryKey val code: Int,
     val data: List<DataEntity>
 )

@@ -39,10 +39,11 @@ fun DataEntity.toData() = Data(
 )
 
 fun Manga.toEntity() = MangaEntity(
-    id = Random.toString(),
+    code = code,
     data = data.map { it.toDataEntity() }
 )
 
 fun MangaEntity.toManga() = Manga(
+    code = code,
     data = data.map { it.toData() }
 )
