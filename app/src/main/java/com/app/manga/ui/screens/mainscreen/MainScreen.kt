@@ -17,6 +17,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.app.manga.ui.navigation.navigationitems.items
+import com.app.manga.ui.screens.mainscreen.facestreamscreen.FaceStreamScreen
 import com.app.manga.ui.screens.mainscreen.mangascreen.MangaScreen
 
 @Composable
@@ -61,15 +62,13 @@ fun MainScreen(
         NavHost(
             modifier = modifier.padding(innerpadding),
             navController = mainScreenNavController,
-            startDestination = "manga screen"
+            startDestination = "face stream screen"
         ){
             composable(route = "manga screen") {
                 MangaScreen()
             }
             composable(route = "face stream screen"){
-                Box(
-                    modifier.fillMaxSize()
-                )
+                FaceStreamScreen()
             }
         }
     }

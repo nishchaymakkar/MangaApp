@@ -84,7 +84,7 @@ dependencies {
 
     //koin
     implementation(libs.koin.android)
-    implementation (libs.koin.androidx.compose)
+    implementation(libs.koin.androidx.compose)
 
     //retrofit
     implementation(libs.retrofit)
@@ -96,5 +96,20 @@ dependencies {
 
     //coil
     implementation(libs.coil.compose)
+
+    //cameraX
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
+    implementation(libs.androidx.camera.extensions)
+
+    //accompanist permission
+    implementation(libs.accompanist.permissions)
+
+    //face detector
+
+        implementation("com.google.mediapipe:tasks-vision:0.20230731")
+
 
 }
