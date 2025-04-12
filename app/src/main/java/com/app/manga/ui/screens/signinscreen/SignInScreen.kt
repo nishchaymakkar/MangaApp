@@ -20,9 +20,12 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SignInScreen() {
+    val viewModel: SignInViewModel = koinViewModel()
+    val signInState by viewModel.signInState
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
@@ -102,8 +105,8 @@ fun SignInScreen() {
                 )
 
                 OutlinedTextField(
-                    value = email,
-                    onValueChange = { email = it },
+                    value = signInState.email,
+                    onValueChange = viewModel::onEmailChange,
                     label = { Text("Your Email Address", color = Color.Gray) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
@@ -118,8 +121,8 @@ fun SignInScreen() {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 OutlinedTextField(
-                    value = password,
-                    onValueChange = { password = it },
+                    value = signInState.password,
+                    onValueChange = viewModel::onPasswordChange,
                     label = { Text("Password", color = Color.Gray) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
