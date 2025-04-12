@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
@@ -98,14 +99,16 @@ fun FaceStreamScreen(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .onSizeChanged { size: IntSize ->
-                        previewSize = androidx.compose.ui.geometry.Size(size.width.toFloat(), size.height.toFloat())
+                    .onSizeChanged { size ->
+                        previewSize = Size(size.width.toFloat(), size.height.toFloat())
                     }
             ) {
-                CameraPreview(controller = controller)
+                CameraPreview(
+                    modifier = Modifier.fillMaxSize(),
+                    controller = controller
+                )
 
-                if (previewSize != androidx.compose.ui.geometry.Size.Zero && detections.value.isNotEmpty()) {
-                    Log.d("BoxPlacement", "Drawing ${detections.value.size} detections")
+                if (previewSize != Size.Zero && detections.value.isNotEmpty()) {
                     Box(
                         modifier = Modifier
                             .matchParentSize()
@@ -114,7 +117,6 @@ fun FaceStreamScreen(
                                 val analysisHeight = 640f
                                 val scaleX = previewSize.width / analysisWidth
                                 val scaleY = previewSize.height / analysisHeight
-
                                 val isFrontCamera = controller.cameraSelector == CameraSelector.DEFAULT_FRONT_CAMERA
 
                                 detections.value.forEach { detection ->
@@ -133,8 +135,6 @@ fun FaceStreamScreen(
                                     val scaledWidth = width * scaleX
                                     val scaledHeight = height * scaleY
 
-                                    Log.d("BoxPlacement", "Drawing box: left=$scaledLeft, top=$scaledTop, width=$scaledWidth, height=$scaledHeight")
-
                                     drawRect(
                                         color = Color.Green,
                                         topLeft = Offset(scaledLeft, scaledTop),
@@ -144,9 +144,9 @@ fun FaceStreamScreen(
                                 }
                             }
                     )
-
                 }
             }
+
         } else {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -195,28 +195,4 @@ private class FaceDetectionAnalyzer(
         }
         image.close()
     }
-}
-fun convertToProtoDetections(detections: List<com.google.mediapipe.tasks.components.containers.Detection>): List<com.google.mediapipe.formats.proto.DetectionProto.Detection> {
-    return detections.map { detection ->
-        com.google.mediapipe.formats.proto.DetectionProto.Detection.newBuilder()
-            .addAllLabel(detection.categories().map { it.categoryName() })
-            .build()
-    }
-}
-fun convertFromProtoDetection(protoDetection: com.google.mediapipe.formats.proto.DetectionProto.Detection): com.google.mediapipe.tasks.components.containers.Detection {
-    val categories = protoDetection.labelList.map { label ->
-        com.google.mediapipe.tasks.components.containers.Category.create(0f,1,label,label)
-    }
-
-    val boundingBox = if (protoDetection.hasLocationData() && protoDetection.locationData.hasBoundingBox()) {
-        val box = protoDetection.locationData.boundingBox
-        android.graphics.Rect(box.xmin, box.ymin, box.xmin + box.width, box.ymin + box.height)
-    } else {
-        android.graphics.Rect()
-    }
-
-    return com.google.mediapipe.tasks.components.containers.Detection.create(
-        categories,
-        boundingBox.toRectF()
-    )
 }
