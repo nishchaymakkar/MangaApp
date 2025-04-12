@@ -12,12 +12,12 @@ import com.app.manga.data.toManga
 import kotlinx.coroutines.flow.map
 
 class MangaScreenViewModel(
-    pager: Pager<Int, MangaEntity>
+    pager: Pager<Int, DataEntity>
 ): ViewModel() {
     val productPagingFlow = pager
         .flow
         .map { pagingData->
-            pagingData.map {it.toManga() }
+            pagingData.map {it.toData() }
         }
         .cachedIn(viewModelScope)
 }

@@ -8,12 +8,12 @@ import androidx.room.Upsert
 @Dao
 interface MangaDao {
     @Upsert
-    suspend fun upsertManga(manga: List<MangaEntity>)
+    suspend fun upsertManga(manga: List<DataEntity>)
 
-    @Query("SELECT * FROM MangaEntity")
-    fun pagingSource(): PagingSource<Int, MangaEntity>
+    @Query("SELECT * FROM DataEntity")
+    fun pagingSource(): PagingSource<Int, DataEntity>
 
-    @Query("DELETE FROM MangaEntity")
+    @Query("DELETE FROM DataEntity")
     suspend fun clearAll()
 
 }

@@ -94,9 +94,7 @@ fun MangaScreen(
                                 if (item != null) {
                                     Column {
                                         Text(text = "Manga Item #$index")
-                                        item.data.forEach { data ->
-                                            MangaItem(data = data)
-                                        }
+                                        MangaItem(data = item)
                                     }
                                 }
                             }

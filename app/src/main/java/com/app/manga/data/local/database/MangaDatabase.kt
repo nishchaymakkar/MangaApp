@@ -7,7 +7,7 @@ import com.app.manga.data.model.Manga
 
 @Database(
     entities = [MangaEntity::class, DataEntity::class],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

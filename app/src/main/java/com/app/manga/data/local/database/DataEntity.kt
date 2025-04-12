@@ -12,7 +12,7 @@ data class DataEntity(
     val id: String,
     val nsfw: Boolean,
     val status: String,
-    val subTitle: String,
+    val subTitle: String?,
     val summary: String,
     val thumb: String,
     val title: String,

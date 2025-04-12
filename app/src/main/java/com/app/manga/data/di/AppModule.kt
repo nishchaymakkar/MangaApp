@@ -16,7 +16,7 @@ import org.koin.dsl.module
 
 object AppModule {
     @ExperimentalPagingApi
-    fun provideProductPager(mangaDb: MangaDatabase, mangaApi: MangaApiService): Pager<Int, MangaEntity> {
+    fun provideProductPager(mangaDb: MangaDatabase, mangaApi: MangaApiService): Pager<Int, DataEntity> {
         return Pager(
             config = PagingConfig(
                 pageSize = 10,
@@ -40,10 +40,10 @@ val appModule = module {
             androidContext(),
             MangaDatabase::class.java,
             "manga_db"
-        ).fallbackToDestructiveMigration().build()
+        ).fallbackToDestructiveMigration(dropAllTables = true).build()
     }
 
     single { get<MangaDatabase>().dao }
 
-    single<Pager<Int, MangaEntity>> { AppModule.provideProductPager(get(), get()) }
+    single<Pager<Int, DataEntity>> { AppModule.provideProductPager(get(), get()) }
 }
