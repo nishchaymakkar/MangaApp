@@ -17,6 +17,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.app.manga.ui.navigation.navigationitems.items
+import com.app.manga.ui.screens.mainscreen.facestreamscreen.FaceDectectionLive.FaceDetectorScreen
 import com.app.manga.ui.screens.mainscreen.facestreamscreen.FaceStreamScreen
 import com.app.manga.ui.screens.mainscreen.mangascreen.MangaScreen
 
@@ -68,10 +69,14 @@ fun MainScreen(
                 MangaScreen()
             }
             composable(route = "face stream screen"){
-                FaceStreamScreen()
+                FaceDetectorScreen()
             }
+
         }
     }
 
 
 }
+
+
+

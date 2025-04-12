@@ -24,5 +24,5 @@ val items = listOf(
         title = "Face Stream Screen",
         selectedIcon = Icons.Filled.Face,
         unselectedIcon = Icons.Outlined.Face
-    )
+    ),
 )

@@ -109,7 +109,7 @@ dependencies {
 
     //face detector
 
-        implementation("com.google.mediapipe:tasks-vision:0.20230731")
+    implementation("com.google.mediapipe:tasks-vision:0.20230731")
 
 
 }
