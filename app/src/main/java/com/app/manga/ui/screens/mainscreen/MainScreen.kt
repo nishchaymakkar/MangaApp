@@ -1,7 +1,6 @@
 package com.app.manga.ui.screens.mainscreen
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -17,13 +16,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.app.manga.ui.navigation.navigationitems.items
-import com.app.manga.ui.screens.mainscreen.facestreamscreen.FaceDectectionLive.FaceDetectorScreen
-import com.app.manga.ui.screens.mainscreen.facestreamscreen.FaceStreamScreen
+import com.app.manga.ui.screens.mainscreen.facestreamscreen.facedetectorlive.FaceDetectorScreen
 import com.app.manga.ui.screens.mainscreen.mangascreen.MangaScreen
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onSignOut: () -> Unit
 ) {
     val mainScreenNavController = rememberNavController()
     val navBackStackEntry by mainScreenNavController.currentBackStackEntryAsState()
@@ -59,14 +59,15 @@ fun MainScreen(
                 }}
         }
     ){
-        innerpadding ->
         NavHost(
-            modifier = modifier.padding(innerpadding),
+            modifier = modifier.padding(),
             navController = mainScreenNavController,
-            startDestination = "face stream screen"
+            startDestination = "manga screen"
         ){
             composable(route = "manga screen") {
-                MangaScreen()
+                MangaScreen(
+                    onSignOut = onSignOut
+                )
             }
             composable(route = "face stream screen"){
                 FaceDetectorScreen()

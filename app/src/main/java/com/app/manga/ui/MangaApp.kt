@@ -10,23 +10,34 @@ import com.app.manga.ui.navigation.MainScreen
 import com.app.manga.ui.navigation.SignInScreen
 import com.app.manga.ui.screens.mainscreen.MainScreen
 import com.app.manga.ui.screens.signinscreen.SignInScreen
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MangaApp(
     modifier: Modifier = Modifier
 ) {
+    val viewModel : MangaAppViewModel = koinViewModel()
    val navController = rememberNavController()
-    val isLoggedIn = true
+    val email = viewModel.email
 
     NavHost(
+        modifier = modifier,
         navController = navController,
-        startDestination = if (isLoggedIn) MainScreen else SignInScreen
+        startDestination = if (email != null) MainScreen else SignInScreen
     ){
         composable<SignInScreen> {
-            SignInScreen()
+            SignInScreen(onSignInClick = {
+                navController.navigate(MainScreen)
+            })
         }
         composable<MainScreen> {
-            MainScreen()
+            MainScreen(
+                onSignOut = {
+                    navController.navigate(SignInScreen){
+                        popUpTo(0)
+                    }
+                }
+            )
 
     }
     }

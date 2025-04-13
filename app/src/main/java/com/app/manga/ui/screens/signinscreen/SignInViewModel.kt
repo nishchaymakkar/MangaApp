@@ -4,13 +4,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.app.manga.data.local.datastore.DataStoreRepository
 import kotlinx.coroutines.launch
 
 data class SignInState(
     val email: String = "",
     val password: String = ""
 )
-class SignInViewModel(): ViewModel() {
+class SignInViewModel(
+    private val dataStoreRepository: DataStoreRepository
+): ViewModel() {
     var signInState = mutableStateOf(SignInState())
         private set
 
@@ -26,5 +29,11 @@ class SignInViewModel(): ViewModel() {
         signInState.value = signInState.value.copy(password = password)
 
     }
-
+    fun signIn(){
+        viewModelScope.launch {
+            if (email != null && password != null){
+                dataStoreRepository.saveCredentials(email, password)
+            }
+        }
+    }
 }

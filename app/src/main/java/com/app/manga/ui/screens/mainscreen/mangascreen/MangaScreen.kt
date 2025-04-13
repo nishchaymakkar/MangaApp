@@ -37,10 +37,13 @@ import com.app.manga.data.model.Data
 import org.koin.androidx.compose.koinViewModel
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.TopAppBar
@@ -50,10 +53,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.font.FontWeight
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MangaScreen(
     modifier: Modifier = Modifier,
-    viewModel: MangaScreenViewModel = koinViewModel()
+    viewModel: MangaScreenViewModel = koinViewModel(),
+    onSignOut: () -> Unit
 ) {
     val manga = viewModel.productPagingFlow.collectAsLazyPagingItems()
     val context = LocalContext.current
@@ -70,15 +75,28 @@ fun MangaScreen(
             ).show()
         }
     }
-    
-    // Add state for selected manga
+    var profileDialog by remember { mutableStateOf(false) }
     var selectedManga by remember { mutableStateOf<Data?>(null) }
     
-    Scaffold { innerpadding ->
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(text = "Manga App") },
+                actions = {
+                    IconButton(onClick = { profileDialog = true }) {
+                        Icon(
+                            imageVector = Icons.Default.Person,
+                            contentDescription = "person"
+                        )
+                    }
+                }
+            )
+        }
+    ) { innerpadding ->
         Box(modifier = modifier
             .fillMaxSize()
             .padding(innerpadding)) {
-            
+
             when (val state = manga.loadState.refresh) {
                 is LoadState.Loading -> {
                     CircularProgressIndicator(
@@ -149,6 +167,17 @@ fun MangaScreen(
             onDismiss = { selectedManga = null }
         )
     }
+    
+    if (profileDialog) {
+        ProfileDialog(
+            onDismiss = {
+                profileDialog = false
+                viewModel.signOut()
+                onSignOut()
+            }
+        )
+    }
+
 }
 
 @Composable
@@ -220,4 +249,29 @@ fun MangaDetailDialog(
             Text("Sub Title: ${manga.subTitle}")
         }
     }
+}
+
+@Composable
+fun ProfileDialog(onDismiss: () -> Unit) {
+    androidx.compose.material3.AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Profile") },
+        text = { Text("Are you sure you want to sign out?") },
+        confirmButton = {
+            Button(onClick = onDismiss) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(imageVector = Icons.Default.Person, contentDescription = "person")
+                    Text(text = "Sign Out")
+                }
+            }
+        },
+        dismissButton = {
+            Button(onClick = { onDismiss() }) {
+                Text("Cancel")
+            }
+        }
+    )
 }

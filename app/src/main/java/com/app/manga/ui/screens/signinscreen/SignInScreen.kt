@@ -1,6 +1,6 @@
 package com.app.manga.ui.screens.signinscreen
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,24 +14,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.koin.androidx.compose.koinViewModel
+import com.app.manga.R
 
 @Composable
-fun SignInScreen() {
+fun SignInScreen(
+    onSignInClick : ()-> Unit
+) {
     val viewModel: SignInViewModel = koinViewModel()
     val signInState by viewModel.signInState
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
 
     Surface(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().imePadding(),
         color = Color.Black
     ) {
         Column(
@@ -77,22 +78,33 @@ fun SignInScreen() {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    IconButton(
+                    Button(
                         onClick = { /* Handle Google login */ },
-                        colors = IconButtonDefaults.iconButtonColors(containerColor = Color.Gray),
                         modifier = Modifier.clip(shape = CircleShape),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.Gray),
+                        contentPadding = PaddingValues(0.dp)
                     ) {
-                        Text("G", color = Color.Black)
+                        Image(
+                            painter = painterResource(R.drawable.googleicon),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(50.dp)
+                                .clip(shape = CircleShape)
+                        )
                     }
                     
-                    IconButton(
+                    Button(
                         onClick = { /* Handle Apple login */ },
-                        colors = IconButtonDefaults.iconButtonColors(containerColor = Color.Gray),
                         modifier = Modifier.clip(shape = CircleShape),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.Gray),
+                        contentPadding = PaddingValues(0.dp)
 
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.Close,
+                        Image(
+                            painter = painterResource(R.drawable.appleicon),
+                            modifier = Modifier
+                                .size(50.dp)
+                                .clip(shape = CircleShape),
                             contentDescription = null
                         )
                     }
@@ -167,7 +179,8 @@ fun SignInScreen() {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Button(
-                    onClick = { /* Handle login */ },
+                    onClick = { viewModel.signIn()
+                              onSignInClick()},
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(containerColor = Color.White),
                     shape = RoundedCornerShape(8.dp)

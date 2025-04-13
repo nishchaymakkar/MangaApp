@@ -1,4 +1,4 @@
-package com.app.manga.ui.screens.mainscreen.facestreamscreen.FaceDectectionLive
+package com.app.manga.ui.screens.mainscreen.facestreamscreen.facedetectorlive
 
 
 import androidx.compose.material3.Button
@@ -25,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -46,13 +45,13 @@ import kotlinx.coroutines.withContext
 fun FaceDetectorScreen() {
     val context = LocalContext.current
     val cameraPermissionState = rememberPermissionState(Manifest.permission.CAMERA)
-    val lifecycleOwner = LocalLifecycleOwner.current
+    val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
 
     var detectorState by remember { mutableStateOf(DetectorState()) }
     var detectionResults by remember { mutableStateOf<FaceDetectorResult?>(null) }
-    var inferenceTime by remember { mutableStateOf(0L) }
-    var previewWidth by remember { mutableStateOf(0) }
-    var previewHeight by remember { mutableStateOf(0) }
+    var inferenceTime by remember { mutableLongStateOf(0L) }
+    var previewWidth by remember { mutableIntStateOf(0) }
+    var previewHeight by remember { mutableIntStateOf(0) }
 
     val faceDetectorHelper by remember {
         mutableStateOf(
@@ -123,7 +122,7 @@ fun FaceDetectorScreen() {
                             val preview = Preview.Builder()
                                 .setTargetAspectRatio(AspectRatio.RATIO_4_3)
                                 .build()
-                                .also { it.setSurfaceProvider(previewView.surfaceProvider) }
+                                .also { it.surfaceProvider = previewView.surfaceProvider }
 
                             val imageAnalyzer = ImageAnalysis.Builder()
                                 .setTargetAspectRatio(AspectRatio.RATIO_4_3)
