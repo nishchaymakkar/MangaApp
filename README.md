@@ -42,9 +42,9 @@ MangaVerse is a sleek and modern Android app that lets users explore, search, an
 
 ## 📸 Screenshots
 
-| Home | Description | Camera | Face Detection |
+| Home | Description | Login  | Face Detection |
 |------|-------------|--------|----------------|
-| ![Home](https://github.com/user-attachments/assets/917d71b8-7f44-47bb-9668-15981238f637) | ![Description Screen](https://github.com/user-attachments/assets/c0b2783d-0048-4352-adf1-12db427af948) | ![Sign In Screen](https://github.com/user-attachments/assets/f2998e07-b774-46a3-9150-7f39f2d7255b) | ![Face Detection](https://github.com/user-attachments/assets/07c4fc71-8354-4529-9887-b29886f6e311) |
+|![Home](https://github.com/user-attachments/assets/917d71b8-7f44-47bb-9668-15981238f637)|![Description Screen](https://github.com/user-attachments/assets/c0b2783d-0048-4352-adf1-12db427af948)|![Sign In Screen](https://github.com/user-attachments/assets/f2998e07-b774-46a3-9150-7f39f2d7255b)|![Face Detection](https://github.com/user-attachments/assets/07c4fc71-8354-4529-9887-b29886f6e311)|
 
 ---
 
