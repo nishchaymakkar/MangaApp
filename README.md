@@ -60,6 +60,12 @@ MangaVerse is a sleek and modern Android app that lets users explore, search, an
 
 [Download Latest APK](https://github.com/nishchaymakkar/MangaApp/releases)
 
+### Video Demonstration
+
+https://github.com/user-attachments/assets/f74fa42e-a15a-4a0a-ae13-32d19dbd1014
+
+
+
 ### Clone the Repository
 
 ```bash
