@@ -56,6 +56,9 @@ MangaVerse is a sleek and modern Android app that lets users explore, search, an
 - Kotlin 1.6+
 - Gradle 7.0+
 - Internet connection (for API access)
+### 📥 Download APK
+
+[Download Latest APK](https://github.com/nishchaymakkar/MangaApp/releases)
 
 ### Clone the Repository
 
