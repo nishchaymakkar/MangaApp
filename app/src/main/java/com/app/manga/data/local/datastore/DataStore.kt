@@ -44,6 +44,9 @@ class DataStoreRepository(private val context: Context) {
     suspend fun isLoggedIn(): Boolean {
         return emailFlow.first() != null && passwordFlow.first() != null
     }
-
-
+    fun isLoggedInFlow() = dataStore.data.map { preferences ->
+        val email = preferences[EMAIL]
+        val password = preferences[PASSWORD]
+        !email.isNullOrEmpty() && !password.isNullOrEmpty()
+    }
 }
