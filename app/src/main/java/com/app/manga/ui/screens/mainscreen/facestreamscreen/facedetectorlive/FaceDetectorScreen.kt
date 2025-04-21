@@ -22,8 +22,18 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
@@ -102,7 +112,8 @@ fun FaceDetectorScreen() {
         } else {
             Box(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
             ) {
                 AndroidView(
                     modifier = Modifier.fillMaxSize(),
@@ -157,49 +168,59 @@ fun FaceDetectorScreen() {
                         previewView
                     }
                 )
+                
 
                 detectionResults?.let { result ->
-                    Canvas(modifier = Modifier.fillMaxSize()) {
+                    Canvas(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
                         val viewWidth = size.width
                         val viewHeight = size.height
+                        val circleRadius = minOf(viewWidth, viewHeight) * 0.4f
+                        val center = Offset(viewWidth / 2, viewHeight / 2)
 
-                        val previewAspect = previewWidth.toFloat() / previewHeight
-                        val viewAspect = viewWidth / viewHeight
-                        val scaleX: Float
-                        val scaleY: Float
-                        val offsetX: Float
-                        val offsetY: Float
+                        // Top
+                        drawRect(
+                            color = Color.Black,
+                            topLeft = Offset(0f, 0f),
+                            size = Size(viewWidth, center.y - circleRadius)
+                        )
 
-                        if (previewAspect > viewAspect) {
-                            scaleY = viewHeight / previewHeight
-                            scaleX = scaleY
-                            offsetX = (viewWidth - previewWidth * scaleX) / 2
-                            offsetY = 0f
-                        } else {
+                        // Bottom
+                        drawRect(
+                            color = Color.Black,
+                            topLeft = Offset(0f, center.y + circleRadius),
+                            size = Size(viewWidth, viewHeight - (center.y + circleRadius))
+                        )
 
-                            scaleX = viewWidth / previewWidth
-                            scaleY = scaleX
-                            offsetX = 0f
-                            offsetY = (viewHeight - previewHeight * scaleY) / 2
-                        }
+                        // Left
+                        drawRect(
+                            color = Color.Black,
+                            topLeft = Offset(0f, center.y - circleRadius),
+                            size = Size(center.x - circleRadius, 2 * circleRadius)
+                        )
 
-                        for (detection in result.detections()) {
-                            val boundingBox = detection.boundingBox()
+                        // Right
+                        drawRect(
+                            color = Color.Black,
+                            topLeft = Offset(center.x + circleRadius, center.y - circleRadius),
+                            size = Size(viewWidth - (center.x + circleRadius), 2 * circleRadius)
+                        )
+
+                        // Dotted border circle
+                        val pathEffect = PathEffect.dashPathEffect(floatArrayOf(20f, 20f), 0f)
 
 
-                            val left = boundingBox.left * scaleX + offsetX
-                            val top = boundingBox.top * scaleY + offsetY
-                            val right = boundingBox.right * scaleX + offsetX
-                            val bottom = boundingBox.bottom * scaleY + offsetY
-
-                            drawRect(
-                                color = Color.Green,
-                                topLeft = androidx.compose.ui.geometry.Offset(left, top),
-                                size = androidx.compose.ui.geometry.Size(right - left, bottom - top),
-                                style = Stroke(width = 8f)
-                            )
-                        }
+                        drawRect(
+                            color = if (detectionResults?.detections()?.isNotEmpty() == true) Color.Green else Color.Red,
+                            topLeft = Offset(center.x - circleRadius, center.y - circleRadius),
+                            size = Size(circleRadius * 2, circleRadius * 2),
+                          // To make it rounded like a circle
+                            style = Stroke(width = 8f, pathEffect = pathEffect)
+                        )
                     }
+
+
                 }
             }
 

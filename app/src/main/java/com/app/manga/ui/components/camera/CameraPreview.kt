@@ -21,7 +21,7 @@ fun CameraPreview(
                 controller.bindToLifecycle(lifecycleOwner)
             }
         },
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
     )
     
 }
